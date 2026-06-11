@@ -24,3 +24,43 @@ body {
 .alert {
     border-radius: 12px;
 }
+
+body {
+    background-color: #f4f6f9;
+}
+
+.hero-card {
+
+    margin-top: 80px;
+
+    background: white;
+
+    padding: 50px;
+
+    border-radius: 15px;
+
+    text-align: center;
+}
+
+.card {
+
+    border-radius: 12px;
+}
+
+.card:hover {
+
+    transform: translateY(-5px);
+
+    transition: 0.3s;
+}
+
+.btn-primary {
+
+    padding-left: 25px;
+    padding-right: 25px;
+}
+
+.navbar-brand {
+
+    font-size: 1.3rem;
+}

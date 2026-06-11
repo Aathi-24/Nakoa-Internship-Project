@@ -110,6 +110,7 @@ def virustotal(ip):
                     "Last_Reported": last_reported,
                 }
             )
+        print(final_results)
         return final_results
     
     else:

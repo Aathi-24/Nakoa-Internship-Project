@@ -86,6 +86,10 @@
 
         <div class="alert alert-info">
             <strong>Analyzed IP:</strong> {{ ip }}
+
+            <strong>Total Reports:</strong> {{ total_reports }}
+
+            <strong>Last Reporated Date:</strong> {{ last_reported}}
         </div>
         
         <div class="alert{% if verdict == 'Safe' %} alert-success {% else %} alert-warning {% endif %} shadow-sm">
@@ -104,8 +108,6 @@
                             <th>Vendor </th>
                             <th>Status </th>
                             <th>Reason </th>
-                            <th>Total Reports </th>
-                            <th>Last Reported </th>
                         </tr>
                     </thead>
 
@@ -121,8 +123,6 @@
                                 {% endif %}
                             </td>
                             <td>{{ row.Reason }}</td>
-                            <td>{{ row.Total_Reports }}</td>
-                            <td>{{ row.Last_Reported }}</td>
                         </tr>
                         {% endfor %}
                     </tbody>

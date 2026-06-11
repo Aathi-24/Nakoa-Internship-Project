@@ -21,6 +21,9 @@ def home():
         else:
             verdict = "Safe"
         
+        total_reports = results[4].get("Total_Reports")
+        last_reported = results[4].get("Last_Reported")
+        
         return render_template(
             "result.html", 
             results = results, 
@@ -28,7 +31,9 @@ def home():
             safe = safe, 
             blocked = blocked, 
             ip = ip,
-            verdict = verdict
+            verdict = verdict,
+            total_reports = total_reports,
+            last_reported = last_reported
             )
     
     return render_template("index.html")
