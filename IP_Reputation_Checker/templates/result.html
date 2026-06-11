@@ -1,16 +1,9 @@
 <!DOCTYPE html>
 <html>
-    <nav class="navbar navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <span class="navbar-brand mb-0 h1"> IP Reputation Dashboard </span>
-            <a href="/" class="btn btn-outline-light"> Analyze Another IP </a>
-        </div>
-    </nav>
-
     <head>
         <title>IP Threat Scope</title>
 
-        <link rel = "icon" href = "/favicon.svg">
+        <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
 
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 
@@ -20,6 +13,13 @@
     </head>
 
     <body>
+        <nav class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1"> IP Reputation Dashboard </span>
+                <a href="/" class="btn btn-outline-light"> Analyze Another IP </a>
+            </div>
+        </nav>
+
         <script src="https://code.jquery.com/jquery-3.7.1.min.js"> </script>
 
         <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"> </script>
@@ -115,9 +115,9 @@
                             <td>{{ row.Vendor }}</td>
                             <td>
                                 {% if row.Blocked == "Blocked" %}
-                                    <span class="badge rounded-pill bg-success px-3 py-2"> Blocked </span>
+                                    <span class="badge rounded-pill bg-danger px-3 py-2"> Blocked </span>
                                 {% else %}
-                                    <span class="badge rounded-pill bg-danger px-3 py-2"> Safe </span>
+                                    <span class="badge rounded-pill bg-success px-3 py-2"> Safe </span>
                                 {% endif %}
                             </td>
                             <td>{{ row.Reason }}</td>
