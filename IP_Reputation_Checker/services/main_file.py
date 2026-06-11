@@ -106,8 +106,8 @@ def virustotal(ip):
                     "Vendor": vendor,
                     "Blocked": blocked,
                     "Reason": reason,
-                    "Total Reports": total_reports,
-                    "Last Reported": last_reported,
+                    "Total_Reports": total_reports,
+                    "Last_Reported": last_reported,
                 }
             )
         return final_results
