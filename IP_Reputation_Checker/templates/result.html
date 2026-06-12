@@ -12,7 +12,7 @@
         <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
     </head>
 
-    <body>
+    <body bgcolor = "black">
         <nav class="navbar navbar-dark bg-dark shadow-sm">
             <div class="container">
                 <span class="navbar-brand mb-0 h1"> IP Reputation Dashboard </span>
@@ -130,6 +130,65 @@
                 </table>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <div class="col-md-3">
+                <div class="card shadow-sm">
+
+                    <div class="card-body">
+
+                        <h5 class="text-center"> Detection Summary </h5>
+
+                        <canvas id="summaryChart"></canvas>
+
+                    </div>
+
+                </div>
+
+        </div>
+
+        <script>
+
+const ctx = document.getElementById('summaryChart');
+
+    new Chart(ctx, {
+
+        type: 'pie',
+
+        data: {
+
+            labels: [
+
+                'Safe',
+                'Blocked'
+
+            ],
+
+            datasets: [{
+
+                data: [
+
+                    {{ safe }},
+                    {{ blocked }}
+
+                ],
+
+                backgroundColor: [
+
+                    '#198754',
+                    '#dc3545'
+
+                ]
+
+            }]
+
+        }
+
+    });
+
+</script>
+        
     </body>
 
 </html>

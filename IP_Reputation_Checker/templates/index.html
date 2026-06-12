@@ -36,7 +36,7 @@
         <div class="col-lg-8">
             <div class="hero-card shadow">
                 <h1 class="display-5 fw-bold"> IP Reputation Dashboard </h1>
-                <p class="lead text-muted"> Multi-Vendor Threat Intelligence Analysis </p>
+                <p class="lead text-muted"> <h4> Multi-Vendor Threat Intelligence Analysis </h4></p>
 
                 <hr>
 
@@ -44,6 +44,26 @@
                     Check whether an IP address has been
                     flagged as malicious by security vendors.
                 </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+
+                        <div class="alert alert-{{ category }} alert-dismissible fade show">
+
+                            {{ message }}
+
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
+                            </button>
+
+                        </div>
+
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
 
                 <form method="POST">
 
@@ -53,6 +73,7 @@
                             name="ip"
                             class="form-control"
                             placeholder="Enter IP Address"
+                            value="{{ ip if ip else '' }}"
                             required>
 
                         <button

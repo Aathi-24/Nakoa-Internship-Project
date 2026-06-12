@@ -1,9 +1,11 @@
 from io import StringIO
-from flask import Flask, render_template, request, send_file, Response
+from flask import Flask, render_template, request, send_file, Response, flash, redirect
 from services.main_file import abuseipdb, virustotal
 import pandas as pd
+import ipaddress
 
 app = Flask(__name__)
+app.secret_key = "aathi24"
 
 latest_results = []
 
@@ -16,6 +18,14 @@ def home():
     if request.method == "POST":
 
         ip = request.form["ip"]
+
+        try:
+            ipaddress.ip_address(ip)
+        except ValueError:
+            flash("Please enter a valid IPv4 or IPv6 address.", "danger")
+
+            return redirect("/")
+
         abuse_res = abuseipdb(ip)
         results = virustotal(ip)
 
@@ -45,7 +55,8 @@ def home():
             ip = ip,
             verdict = verdict,
             total_reports = total_reports,
-            last_reported = last_reported
+            last_reported = last_reported,
+            error = None
             )
     
     return render_template("index.html")

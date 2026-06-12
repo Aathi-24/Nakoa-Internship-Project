@@ -12,11 +12,11 @@ body {
 }
 
 .table {
-    background: white;
+    background-color: rgb(244, 247, 244);
 }
 
 .dataTables_wrapper {
-    background: white;
+    background: rgb(246, 248, 248);
     padding: 20px;
     border-radius: 12px;
 }
@@ -26,14 +26,14 @@ body {
 }
 
 body {
-    background-color: #f4f6f9;
+    background-color: #297bf5;
 }
 
 .hero-card {
 
     margin-top: 80px;
 
-    background: white;
+    background: rgb(74, 238, 33);
 
     padding: 50px;
 
