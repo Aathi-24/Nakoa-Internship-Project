@@ -49,13 +49,24 @@
 
                     <div class="input-group input-group-lg mt-4">
                         <input
-                        type="text"
-                        name="ip"
-                        class="form-control"
-                        placeholder="Enter IP Address"
-                        required>
+                            type="text"
+                            name="ip"
+                            class="form-control"
+                            placeholder="Enter IP Address"
+                            required>
 
-                        <button type="submit" class="btn btn-primary"> Analyze </button>
+                        <button
+                            id="analyzeBtn"
+                            type="submit"
+                            class="btn btn-primary">
+
+                            <span id="buttonText"> Analyze </span>
+
+                            <span
+                                id="spinner"
+                                class="spinner-border spinner-border-sm ms-2 d-none">
+                            </span>
+                        </button>
                     </div>
                 </form>
             </div>
@@ -104,6 +115,25 @@
             </div>
         </div>
     </div>
+</div>
+
+<script>
+    document.querySelector("form").addEventListener("submit", function() {
+    document
+        .getElementById("loadingOverlay")
+        .classList.remove("d-none");
+});
+
+</script>
+
+<div
+    id="loadingOverlay"
+    class="d-none">
+
+    <div class="spinner-border text-light"> </div>
+
+    <h4 class="mt-3 text-light"> Querying Threat Intelligence Sources... </h4>
+
 </div>
 
 </body>
