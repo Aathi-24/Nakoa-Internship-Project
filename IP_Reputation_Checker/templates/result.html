@@ -140,7 +140,7 @@
 
                         <h5 class="text-center"> Detection Summary </h5>
 
-                        <canvas id="summaryChart"></canvas>
+                        <canvas id="summaryChart" data-safe="{{ safe }}" data-blocked="{{ blocked }}" style="max-height:100px;"></canvas>
 
                     </div>
 
@@ -149,45 +149,22 @@
         </div>
 
         <script>
+            const canvas = document.getElementById('summaryChart');
+            const safeCount = Number(canvas.dataset.safe) || 0;
+            const blockedCount = Number(canvas.dataset.blocked) || 0;
 
-const ctx = document.getElementById('summaryChart');
-
-    new Chart(ctx, {
-
-        type: 'pie',
-
-        data: {
-
-            labels: [
-
-                'Safe',
-                'Blocked'
-
-            ],
-
-            datasets: [{
-
-                data: [
-
-                    {{ safe }},
-                    {{ blocked }}
-
-                ],
-
-                backgroundColor: [
-
-                    '#198754',
-                    '#dc3545'
-
-                ]
-
-            }]
-
-        }
-
-    });
-
-</script>
+            new Chart(canvas, {
+                type: 'pie',
+                data: {
+                    labels: ['Safe', 'Blocked'],
+                    datasets: [{
+                        data: [safeCount, blockedCount],
+                        backgroundColor: ['#198754', '#dc3545']
+                    }]
+                },
+                options: { maintainAspectRatio: false }
+            });
+        </script>
         
     </body>
 
