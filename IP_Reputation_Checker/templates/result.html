@@ -85,17 +85,19 @@
         <br>
 
         <div class="alert alert-info">
-            <strong>Analyzed IP:</strong> {{ ip }}
+            <strong>Analyzed IP:</strong> {{ ip }} <br>
 
-            <strong>Total Reports:</strong> {{ total_reports }}
+            <strong>Total Reports:</strong> {{ total_reports }} <br>
 
-            <strong>Last Reporated Date:</strong> {{ last_reported}}
-        </div>
+            <strong>Last Reporated Date:</strong> {{ last_reported}} 
+        </div>  
         
         <div class="alert{% if verdict == 'Safe' %} alert-success {% else %} alert-warning {% endif %} shadow-sm">
             <strong>Overall Verdict:</strong>
             {{ verdict }}
         </div>
+
+        <a href="/details/{{ ip }}" class="btn btn-info"> View Full IP Details </a>
 
         <br>
 

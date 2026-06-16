@@ -1,6 +1,7 @@
 from io import StringIO
 from flask import Flask, render_template, request, send_file, Response, flash, redirect
 from services.main_file import abuseipdb, virustotal
+from ipwhois import IPWhois
 import pandas as pd
 import ipaddress
 
@@ -61,6 +62,64 @@ def home():
     
     return render_template("index.html")
 
+def whois_lookup(ip):
+
+    try:
+        obj = IPWhois(ip)
+        result = obj.lookup_rdap()
+        network = result.get("network", {})
+
+        return {
+
+            # ASN Information
+            "asn": result.get("asn", "N/A"),
+            "asn_registry": result.get("asn_registry", "N/A"),
+            "asn_cidr": result.get("asn_cidr", "N/A"),
+            "asn_country_code": result.get("asn_country_code", "N/A"),
+            "asn_date": result.get("asn_date", "N/A"),
+            "asn_description": result.get("asn_description", "N/A"),
+
+            # Network Information
+            "network_name": network.get("name", "N/A"),
+            "network_handle": network.get("handle", "N/A"),
+            "network_type": network.get("type", "N/A"),
+            "country": network.get("country", "N/A"),
+            "cidr": network.get("cidr", "N/A"),
+            "start_address": network.get("start_address", "N/A"),
+            "end_address": network.get("end_address", "N/A"),
+
+            # Registration Information
+            "created": network.get("events", [{}])[0].get("timestamp", "N/A")
+            if network.get("events") else "N/A",
+
+            # Raw Data
+            "remarks": network.get("remarks", "N/A"),
+
+        }
+
+    except Exception:
+
+        return {
+
+            "asn": "N/A",
+            "asn_registry": "N/A",
+            "asn_cidr": "N/A",
+            "asn_country_code": "N/A",
+            "asn_date": "N/A",
+            "asn_description": "N/A",
+
+            "network_name": "N/A",
+            "network_handle": "N/A",
+            "network_type": "N/A",
+            "country": "N/A",
+            "cidr": "N/A",
+            "start_address": "N/A",
+            "end_address": "N/A",
+
+            "created": "N/A",
+            "remarks": "N/A"
+        }
+
 @app.route("/download/<ip>")
 def download_csv(ip):
 
@@ -79,6 +138,20 @@ def download_csv(ip):
             "Content-Disposition":
             f"attachment; filename={ip}_results.csv"
         }
+    )
+
+@app.route("/details/<ip>")
+def details(ip):
+
+    whois_data = whois_lookup(ip)
+
+    abuse_data = abuseipdb(ip)
+
+    return render_template(
+        "details.html",
+        ip = ip,
+        whois = whois_data,
+        abuse = abuse_data
     )
 
 

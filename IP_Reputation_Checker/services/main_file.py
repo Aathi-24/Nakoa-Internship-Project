@@ -26,6 +26,7 @@ def abuseipdb(ip):
 
     if response.status_code == 200:
         data = response.json()
+        print(data)
         score = data["data"]["abuseConfidenceScore"]
         reports = data["data"]["totalReports"]
 
@@ -57,7 +58,18 @@ def abuseipdb(ip):
             "Total Reports" : data["data"]["totalReports"],
             "Last Reported" : date
         }
-        return dict
+        return {
+            "Total_Reports": reports,
+            "Abuse_Score": score,
+            "ISP": data["data"]["isp"],
+            "Country" : data["data"]["countryName"],
+            "Usage_Type" : data["data"]["usageType"],
+            "Domain" : data["data"]["domain"],
+            "IP_Version" : data["data"]["ipVersion"],
+            "Is_Public" : data["data"]["isPublic"],
+            "Host_Names" : data["data"]["hostnames"],
+            "Is_Whitelisted" : data["data"]["isWhitelisted"]
+        }
     
     else:
         print("Error:", response.status_code)

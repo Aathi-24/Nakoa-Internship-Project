@@ -1,93 +1,93 @@
-Vendor,Blocked,Reason,Total Reports,Last Reported,Total_Reports,Last_Reported
-AbuseIPDB,Blocked,Malicious,1563.0,2026-06-11,,
-Acronis,Safe,Nil,,,9.0,2026-06-10
-0xSI_f33d,Safe,Nil,,,9.0,2026-06-10
-Abusix,Safe,Nil,,,9.0,2026-06-10
-ADMINUSLabs,Blocked,malicious,,,9.0,2026-06-10
-Axur,Safe,Nil,,,9.0,2026-06-10
-ChainPatrol,Safe,Nil,,,9.0,2026-06-10
-Criminal IP,Blocked,malicious,,,9.0,2026-06-10
-AILabs (MONITORAPP),Safe,Nil,,,9.0,2026-06-10
-AlienVault,Safe,Nil,,,9.0,2026-06-10
-alphaMountain.ai,Blocked,suspicious,,,9.0,2026-06-10
-AlphaSOC,Safe,Nil,,,9.0,2026-06-10
-Antiy-AVL,Safe,Nil,,,9.0,2026-06-10
-ArcSight Threat Intelligence,Safe,Nil,,,9.0,2026-06-10
-AutoShun,Safe,Nil,,,9.0,2026-06-10
-Bfore.Ai PreCrime,Safe,Nil,,,9.0,2026-06-10
-BitDefender,Blocked,phishing,,,9.0,2026-06-10
-Bkav,Safe,Nil,,,9.0,2026-06-10
-Blueliv,Safe,Nil,,,9.0,2026-06-10
-Certego,Safe,Nil,,,9.0,2026-06-10
-Chong Lua Dao,Blocked,malicious,,,9.0,2026-06-10
-CINS Army,Safe,Nil,,,9.0,2026-06-10
-Cluster25,Safe,Nil,,,9.0,2026-06-10
-CRDF,Safe,Nil,,,9.0,2026-06-10
-CSIS Security Group,Safe,Nil,,,9.0,2026-06-10
-Snort IP sample list,Safe,Nil,,,9.0,2026-06-10
-CMC Threat Intelligence,Safe,Nil,,,9.0,2026-06-10
-CTX AI,Safe,Nil,,,9.0,2026-06-10
-Cyan,Safe,Nil,,,9.0,2026-06-10
-Cyble,Safe,Nil,,,9.0,2026-06-10
-CyRadar,Safe,Nil,,,9.0,2026-06-10
-DNS8,Safe,Nil,,,9.0,2026-06-10
-Dr.Web,Safe,Nil,,,9.0,2026-06-10
-Ermes,Safe,Nil,,,9.0,2026-06-10
-ESET,Safe,Nil,,,9.0,2026-06-10
-ESTsecurity,Safe,Nil,,,9.0,2026-06-10
-EmergingThreats,Safe,Nil,,,9.0,2026-06-10
-Emsisoft,Safe,Nil,,,9.0,2026-06-10
-Forcepoint ThreatSeeker,Safe,Nil,,,9.0,2026-06-10
-Fortinet,Safe,Nil,,,9.0,2026-06-10
-G-Data,Blocked,phishing,,,9.0,2026-06-10
-GCP Abuse Intelligence,Safe,Nil,,,9.0,2026-06-10
-Google Safebrowsing,Safe,Nil,,,9.0,2026-06-10
-GreenSnow,Safe,Nil,,,9.0,2026-06-10
-GreyNoise,Safe,Nil,,,9.0,2026-06-10
-Gridinsoft,Blocked,suspicious,,,9.0,2026-06-10
-Guardpot,Blocked,suspicious,,,9.0,2026-06-10
-Heimdal Security,Safe,Nil,,,9.0,2026-06-10
-Hunt.io Intelligence,Safe,Nil,,,9.0,2026-06-10
-IPsum,Safe,Nil,,,9.0,2026-06-10
-Juniper Networks,Safe,Nil,,,9.0,2026-06-10
-Kaspersky,Safe,Nil,,,9.0,2026-06-10
-LevelBlue,Safe,Nil,,,9.0,2026-06-10
-Lionic,Safe,Nil,,,9.0,2026-06-10
-Lumu,Safe,Nil,,,9.0,2026-06-10
-MalwarePatrol,Safe,Nil,,,9.0,2026-06-10
-MalwareURL,Safe,Nil,,,9.0,2026-06-10
-Malwared,Safe,Nil,,,9.0,2026-06-10
-Mimecast,Safe,Nil,,,9.0,2026-06-10
-Netcraft,Safe,Nil,,,9.0,2026-06-10
-OpenPhish,Safe,Nil,,,9.0,2026-06-10
-Phishing Database,Safe,Nil,,,9.0,2026-06-10
-PhishFort,Safe,Nil,,,9.0,2026-06-10
-PhishLabs,Safe,Nil,,,9.0,2026-06-10
-Phishtank,Safe,Nil,,,9.0,2026-06-10
-PREBYTES,Safe,Nil,,,9.0,2026-06-10
-PrecisionSec,Safe,Nil,,,9.0,2026-06-10
-Quick Heal,Safe,Nil,,,9.0,2026-06-10
-Quttera,Safe,Nil,,,9.0,2026-06-10
-SafeToOpen,Safe,Nil,,,9.0,2026-06-10
-Sansec eComscan,Safe,Nil,,,9.0,2026-06-10
-Scantitan,Safe,Nil,,,9.0,2026-06-10
-SCUMWARE.org,Safe,Nil,,,9.0,2026-06-10
-Seclookup,Safe,Nil,,,9.0,2026-06-10
-SecureBrain,Safe,Nil,,,9.0,2026-06-10
-SOCRadar,Blocked,phishing,,,9.0,2026-06-10
-Sophos,Safe,Nil,,,9.0,2026-06-10
-StopForumSpam,Safe,Nil,,,9.0,2026-06-10
-Sucuri SiteCheck,Safe,Nil,,,9.0,2026-06-10
-ThreatHive,Safe,Nil,,,9.0,2026-06-10
-URLhaus,Safe,Nil,,,9.0,2026-06-10
-URLQuery,Safe,Nil,,,9.0,2026-06-10
-Viettel Threat Intelligence,Safe,Nil,,,9.0,2026-06-10
-VIPRE,Safe,Nil,,,9.0,2026-06-10
-VX Vault,Safe,Nil,,,9.0,2026-06-10
-ViriBack,Safe,Nil,,,9.0,2026-06-10
-Webroot,Safe,Nil,,,9.0,2026-06-10
-Yandex Safebrowsing,Safe,Nil,,,9.0,2026-06-10
-ZeroCERT,Safe,Nil,,,9.0,2026-06-10
-desenmascara.me,Safe,Nil,,,9.0,2026-06-10
-Xcitium Verdict Cloud,Safe,Nil,,,9.0,2026-06-10
-ZeroFox,Safe,Nil,,,9.0,2026-06-10
+Total_Reports,Abuse_Score,ISP,Status,Vendor,Blocked,Reason,Last_Reported
+135,0.0,Google LLC,Safe,,,,
+0,,,,Acronis,Safe,Nil,2026-06-16
+0,,,,0xSI_f33d,Safe,Nil,2026-06-16
+0,,,,Abusix,Safe,Nil,2026-06-16
+0,,,,ADMINUSLabs,Safe,Nil,2026-06-16
+0,,,,Axur,Safe,Nil,2026-06-16
+0,,,,ChainPatrol,Safe,Nil,2026-06-16
+0,,,,Criminal IP,Safe,Nil,2026-06-16
+0,,,,AILabs (MONITORAPP),Safe,Nil,2026-06-16
+0,,,,AlienVault,Safe,Nil,2026-06-16
+0,,,,alphaMountain.ai,Safe,Nil,2026-06-16
+0,,,,AlphaSOC,Safe,Nil,2026-06-16
+0,,,,Antiy-AVL,Safe,Nil,2026-06-16
+0,,,,ArcSight Threat Intelligence,Safe,Nil,2026-06-16
+0,,,,AutoShun,Safe,Nil,2026-06-16
+0,,,,Bfore.Ai PreCrime,Safe,Nil,2026-06-16
+0,,,,BitDefender,Safe,Nil,2026-06-16
+0,,,,Bkav,Safe,Nil,2026-06-16
+0,,,,Blueliv,Safe,Nil,2026-06-16
+0,,,,Certego,Safe,Nil,2026-06-16
+0,,,,Chong Lua Dao,Safe,Nil,2026-06-16
+0,,,,CINS Army,Safe,Nil,2026-06-16
+0,,,,Cluster25,Safe,Nil,2026-06-16
+0,,,,CRDF,Safe,Nil,2026-06-16
+0,,,,CSIS Security Group,Safe,Nil,2026-06-16
+0,,,,Snort IP sample list,Safe,Nil,2026-06-16
+0,,,,CMC Threat Intelligence,Safe,Nil,2026-06-16
+0,,,,CTX AI,Safe,Nil,2026-06-16
+0,,,,Cyan,Safe,Nil,2026-06-16
+0,,,,Cyble,Safe,Nil,2026-06-16
+0,,,,CyRadar,Safe,Nil,2026-06-16
+0,,,,DNS8,Safe,Nil,2026-06-16
+0,,,,Dr.Web,Safe,Nil,2026-06-16
+0,,,,Ermes,Safe,Nil,2026-06-16
+0,,,,ESET,Safe,Nil,2026-06-16
+0,,,,ESTsecurity,Safe,Nil,2026-06-16
+0,,,,EmergingThreats,Safe,Nil,2026-06-16
+0,,,,Emsisoft,Safe,Nil,2026-06-16
+0,,,,Forcepoint ThreatSeeker,Safe,Nil,2026-06-16
+0,,,,Fortinet,Safe,Nil,2026-06-16
+0,,,,G-Data,Safe,Nil,2026-06-16
+0,,,,GCP Abuse Intelligence,Safe,Nil,2026-06-16
+0,,,,Google Safebrowsing,Safe,Nil,2026-06-16
+0,,,,GreenSnow,Safe,Nil,2026-06-16
+0,,,,GreyNoise,Safe,Nil,2026-06-16
+0,,,,Gridinsoft,Safe,Nil,2026-06-16
+0,,,,Guardpot,Safe,Nil,2026-06-16
+0,,,,Heimdal Security,Safe,Nil,2026-06-16
+0,,,,Hunt.io Intelligence,Safe,Nil,2026-06-16
+0,,,,IPsum,Safe,Nil,2026-06-16
+0,,,,Juniper Networks,Safe,Nil,2026-06-16
+0,,,,Kaspersky,Safe,Nil,2026-06-16
+0,,,,LevelBlue,Safe,Nil,2026-06-16
+0,,,,Lionic,Safe,Nil,2026-06-16
+0,,,,Lumu,Safe,Nil,2026-06-16
+0,,,,MalwarePatrol,Safe,Nil,2026-06-16
+0,,,,MalwareURL,Safe,Nil,2026-06-16
+0,,,,Malwared,Safe,Nil,2026-06-16
+0,,,,Mimecast,Safe,Nil,2026-06-16
+0,,,,Netcraft,Safe,Nil,2026-06-16
+0,,,,OpenPhish,Safe,Nil,2026-06-16
+0,,,,Phishing Database,Safe,Nil,2026-06-16
+0,,,,PhishFort,Safe,Nil,2026-06-16
+0,,,,PhishLabs,Safe,Nil,2026-06-16
+0,,,,Phishtank,Safe,Nil,2026-06-16
+0,,,,PREBYTES,Safe,Nil,2026-06-16
+0,,,,PrecisionSec,Safe,Nil,2026-06-16
+0,,,,Quick Heal,Safe,Nil,2026-06-16
+0,,,,Quttera,Safe,Nil,2026-06-16
+0,,,,SafeToOpen,Safe,Nil,2026-06-16
+0,,,,Sansec eComscan,Safe,Nil,2026-06-16
+0,,,,Scantitan,Safe,Nil,2026-06-16
+0,,,,SCUMWARE.org,Safe,Nil,2026-06-16
+0,,,,Seclookup,Safe,Nil,2026-06-16
+0,,,,SecureBrain,Safe,Nil,2026-06-16
+0,,,,SOCRadar,Safe,Nil,2026-06-16
+0,,,,Sophos,Safe,Nil,2026-06-16
+0,,,,StopForumSpam,Safe,Nil,2026-06-16
+0,,,,Sucuri SiteCheck,Safe,Nil,2026-06-16
+0,,,,ThreatHive,Safe,Nil,2026-06-16
+0,,,,URLhaus,Safe,Nil,2026-06-16
+0,,,,URLQuery,Safe,Nil,2026-06-16
+0,,,,Viettel Threat Intelligence,Safe,Nil,2026-06-16
+0,,,,VIPRE,Safe,Nil,2026-06-16
+0,,,,VX Vault,Safe,Nil,2026-06-16
+0,,,,ViriBack,Safe,Nil,2026-06-16
+0,,,,Webroot,Safe,Nil,2026-06-16
+0,,,,Yandex Safebrowsing,Safe,Nil,2026-06-16
+0,,,,ZeroCERT,Safe,Nil,2026-06-16
+0,,,,desenmascara.me,Safe,Nil,2026-06-16
+0,,,,Xcitium Verdict Cloud,Safe,Nil,2026-06-16
+0,,,,ZeroFox,Safe,Nil,2026-06-16
