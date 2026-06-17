@@ -32,76 +32,89 @@
             );
         </script>
         
-        <div class = "row">
-            <div class="col-md-4">
-                <div class="card shadow-sm border-primary">
-                    <div class="card-body text-center">
+        <div class="container mt-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-primary">
+                        <div class="card-body text-center">
 
-                        <h1 class="display-4">
-                            {{ total }}
-                        </h1>
+                            <h1 class="display-4">
+                                {{ total }}
+                            </h1>
 
-                        <h6 class="text-muted">
-                            Total Vendors
-                        </h6>
+                            <h6 class="text-muted">
+                                Total Vendors
+                            </h6>
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card shadow-sm border-success">
-                    <div class="card-body text-center">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-success">
+                        <div class="card-body text-center">
 
-                        <h1 class="display-4">
-                            {{ safe }}
-                        </h1>
+                            <h1 class="display-4">
+                                {{ safe }}
+                            </h1>
 
-                        <h6 class="text-muted">
-                            Safe
-                        </h6>
+                            <h6 class="text-muted">
+                                Safe
+                            </h6>
 
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-md-4">
-                <div class="card shadow-sm border-danger">
-                    <div class="card-body text-center">
+                <div class="col-md-4">
+                    <div class="card shadow-sm border-danger">
+                        <div class="card-body text-center">
 
-                        <h1 class="display-4">
-                            {{ blocked }}
-                        </h1>
+                            <h1 class="display-4">
+                                {{ blocked }}
+                            </h1>
 
-                        <h6 class="text-muted">
-                            Blocked
-                        </h6>
+                            <h6 class="text-muted">
+                                Blocked
+                            </h6>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    
-        <br>
 
-        <div class="alert alert-info">
-            <strong>Analyzed IP:</strong> {{ ip }} <br>
+        <div class="container mt-5">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-info">
+                        <strong>Analyzed IP:</strong> {{ ip }} <br>
 
-            <strong>Total Reports:</strong> {{ total_reports }} <br>
+                        <strong>Total Reports:</strong> {{ total_reports }} <br>
 
-            <strong>Last Reporated Date:</strong> {{ last_reported}} 
-        </div>  
-        
-        <div class="alert{% if verdict == 'Safe' %} alert-success {% else %} alert-warning {% endif %} shadow-sm">
-            <strong>Overall Verdict:</strong>
-            {{ verdict }}
+                        <strong>Last Reporated Date:</strong> {{ last_reported}} 
+                    </div>  
+                    
+                    <div class="alert{% if verdict == 'Safe' %} alert-success {% else %} alert-warning {% endif %} shadow-sm">
+                        <strong>Overall Verdict:</strong>
+                        {{ verdict }}
+                    </div>
+
+                    <a href="/details/{{ ip }}" class="btn btn-info"> View Full IP Details </a>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h5 class="text-center"> Detection Summary </h5>
+                            <canvas id="summaryChart" data-safe="{{ safe }}" data-blocked="{{ blocked }}" style="max-height:250px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <a href="/details/{{ ip }}" class="btn btn-info"> View Full IP Details </a>
-
-        <br>
-
-        <div class="container-fluid">
+        <div class="container mt-5">
             <h2>Results</h2>
             <a href="/download/{{ ip }}" class="btn btn-success mb-3"> Download as CSV </a>
             <div class = "table-responsive">
@@ -134,21 +147,6 @@
         </div>
 
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <div class="col-md-3">
-                <div class="card shadow-sm">
-
-                    <div class="card-body">
-
-                        <h5 class="text-center"> Detection Summary </h5>
-
-                        <canvas id="summaryChart" data-safe="{{ safe }}" data-blocked="{{ blocked }}" style="max-height:100px;"></canvas>
-
-                    </div>
-
-                </div>
-
-        </div>
 
         <script>
             const canvas = document.getElementById('summaryChart');

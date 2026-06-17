@@ -17,13 +17,20 @@
 
 <body class="bg-light">
 
-<div class="container-fluid my-6">
+<nav class="navbar navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <span class="navbar-brand mb-0 h1"> IP Reputation Dashboard </span>
+        <a href="/" class="btn btn-outline-light"> Back to Analysis </a>
+    </div>
+</nav>
 
-    <h1 class="text-center mb-4">
+<div class="container my-5">
+
+    <h1 class="text-center mb-5">
         IP Intelligence Report
     </h1>
 
-    <div class="alert alert-info">
+    <div class="alert alert-info mb-4">
 
         <strong>Analyzed IP:</strong>
         {{ ip }}
@@ -40,7 +47,7 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-0">
 
                 <tr>
                     <th>ASN</th>
@@ -88,7 +95,7 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-0">
 
                 <tr>
                     <th>Network Name</th>
@@ -141,7 +148,7 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-0">
 
                 <tr>
                     <th>Created</th>
@@ -158,7 +165,7 @@
         </div>
     </div>
 
-    <div class="card shadow-sm mb-4">
+    <div class="card shadow-sm mb-5">
 
         <div class="card-header bg-danger text-white">
 
@@ -168,7 +175,7 @@
 
         <div class="card-body">
 
-            <table class="table table-bordered">
+            <table class="table table-bordered mb-0">
 
                 <tr>
                     <th>IP Version</th>
@@ -226,11 +233,11 @@
 
     </div>
 
-    <div class="text-center">
+    <div class="text-center py-5">
 
         <a
             href="/"
-            class="btn btn-secondary">
+            class="btn btn-secondary btn-lg">
 
             Back to Dashboard
 
