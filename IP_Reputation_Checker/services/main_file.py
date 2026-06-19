@@ -73,7 +73,6 @@ def abuseipdb(ip):
     
     else:
         print("Error:", response.status_code)
-        print(response.text)
         return None
     
 def virustotal(ip):

@@ -1,0 +1,66 @@
+# Changes in this version
+
+## 1. AbuseIPDB now shows up in the results table
+`abuseipdb()` was already being called in `process_single_ip()`, but its
+result was discarded — only VirusTotal's engines made it into the table.
+`abuseipdb()` now returns one merged dict that contains both the original
+detail fields (still used by `/details/<ip>`) and the standardized
+`Vendor / Blocked / Reason / Total_Reports / Last_Reported / Link` fields,
+and `app.py` now folds that row into the same results list as VirusTotal.
+
+## 2. New free vendors added (services/extra_vendors.py)
+Each one is parsed into the exact same row shape VirusTotal/AbuseIPDB use,
+so they all render in the same table. None of these are already part of
+VirusTotal's bundled engine list (VT already includes things like
+AlienVault, StopForumSpam, CINS Army, GreenSnow, etc., so those were
+intentionally skipped to avoid duplicates).
+
+| Vendor | Free tier | API key needed? | Where to get a key |
+|---|---|---|---|
+| GreyNoise (Community API) | Yes | Optional (raises rate limit) | https://www.greynoise.io/viz/account/ |
+| IPQualityScore | Yes (1,000 lookups/month) | Required | https://www.ipqualityscore.com/user/settings |
+| Shodan InternetDB | Yes, unlimited for non-commercial use | Not required at all | n/a |
+
+**API keys were intentionally left blank** in `services/extra_vendors.py` —
+add your own key to the `API_KEY` variable inside each function. Until a key
+is added, GreyNoise still works (unauthenticated, lower rate limit), Shodan
+InternetDB always works (no key needed), and IPQualityScore is skipped
+(returns `None`) since it requires a key as part of its URL.
+
+## 3. Clickable vendor names
+In `templates/result.html`, each vendor name in the results table is now a
+link (opens in a new tab) to that vendor's own results page for the
+analyzed IP:
+- VirusTotal engines → `virustotal.com/gui/ip-address/<ip>/detection`
+- AbuseIPDB → `abuseipdb.com/check/<ip>`
+- GreyNoise → its own `viz.greynoise.io` link
+- Shodan → `shodan.io/host/<ip>`
+- IPQualityScore → its free lookup tool page
+
+## 4. Small robustness fix
+The old code pulled the "Total Reports / Last Reported" summary from
+`results[4]`, which assumed at least 5 VirusTotal rows would always be
+first in the list. Now that AbuseIPDB and other vendors are merged in
+first, that index would point at the wrong row. This is now read directly
+from VirusTotal's own result list (falling back to AbuseIPDB's data if
+VirusTotal has none), so it's correct regardless of vendor order.
+
+## 5. Vendor click now goes to an internal vendor-details page (not the vendor's website)
+The earlier version made each vendor name link out to that vendor's own
+website. That's been replaced:
+- `templates/result.html` no longer shows Status/Reason inline — it now
+  shows just a plain, clickable list of vendor names.
+- Clicking a vendor name goes to a new internal page,
+  `templates/vendor_details.html`, served by the new `/vendor/<vendor_name>`
+  route in `app.py`. It shows that vendor's Status, Reason, Last Reported,
+  and Total Reports for every IP analyzed:
+  - Single-IP mode → just that one IP.
+  - Batch mode → every IP in the batch that's been viewed so far (results
+    are still fetched lazily per IP, same as before — the vendor page
+    simply collects whatever has already been cached in `batch_results`).
+- A `latest_ip` global was added (alongside the existing `latest_results`)
+  so the single-IP case knows which IP its cached results belong to.
+- Submitting a brand-new single IP now also clears any leftover batch
+  state from a previous file upload, so the vendor-details page doesn't
+  mix up batch and single-IP context.
+
