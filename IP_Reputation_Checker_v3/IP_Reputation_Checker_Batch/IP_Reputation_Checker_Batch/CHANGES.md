@@ -64,3 +64,32 @@ website. That's been replaced:
   state from a previous file upload, so the vendor-details page doesn't
   mix up batch and single-IP context.
 
+## 6. File upload removed - IPs are now read directly from the server
+`templates/index.html` no longer has the "Upload Batch File" form. In its
+place is an "Analyze IPs from File" button that hits a new `/run-batch`
+route in `app.py`, which reads `uploads/IP.txt` (the file already bundled
+in this project, one level above `app.py`) directly off disk, resets any
+previous batch state, and starts the batch view at IP #1. The single-IP
+text entry box is untouched.
+
+## 7. New "Download Blocked Report" button
+On `result.html`, right below "View Full IP Details", there's now a
+"Download Blocked Report" button → `/download_blocked_report` in `app.py`.
+One click:
+- Processes every IP in `uploads/IP.txt` (any IP not already analyzed yet
+  gets analyzed right then, so this always covers the whole file in a
+  single click, no matter which IP you're currently viewing).
+- Builds one combined CSV containing only the vendor rows where that
+  vendor blocked that IP, with columns: `Date of Analyzing the IP`
+  (`YYYY-MM-DD HH:MM`, recorded at the moment that IP was analyzed), `IP`,
+  `Blocked Vendor Name`, `Status`, `Reason`, `Last Reported Date`,
+  `Total Reports`.
+
+## 8. Fixed: viewing IP #2 sometimes showed IP #1's results
+Added `Cache-Control: no-store`, `Pragma: no-cache`, and `Expires: 0`
+headers to every response (`app.after_request`). Without these headers,
+browsers can serve a previously-cached copy of a page when navigating
+between similarly-structured pages like `/batch/0` → `/batch/1`, which is
+what caused the previous IP's results to reappear. Each `/batch/<index>`
+request already builds its response strictly from that index's own IP, so
+forcing a fresh fetch on every navigation eliminates the stale view.

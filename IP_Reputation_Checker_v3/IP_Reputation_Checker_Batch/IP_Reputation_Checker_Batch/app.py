@@ -6,6 +6,7 @@ from ipwhois import IPWhois
 import pandas as pd
 import ipaddress
 from werkzeug.utils import secure_filename
+from datetime import datetime
 import os
 
 app = Flask(__name__)
@@ -20,11 +21,29 @@ current_batch_index = 0
 UPLOAD_FOLDER = 'uploads'
 ALLOWED_EXTENSIONS = {'txt', 'csv'}
 
+# The IP list is no longer uploaded by the user - it's read directly from
+# this fixed file on the server. Resolved relative to this file's own
+# location (not the process's working directory) so it's found correctly
+# no matter how/where the app is launched from.
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+IP_FILE_PATH = os.path.join(APP_DIR, '..', 'uploads', 'IP.txt')
+
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+
+@app.after_request
+def add_no_cache_headers(response):
+    """Force every page to be re-fetched from the server instead of being
+    served from the browser's cache. Without this, navigating between batch
+    IPs (or using browser back/forward) can show a stale, previously-loaded
+    IP's page instead of the one actually requested."""
+    response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+    response.headers["Pragma"] = "no-cache"
+    response.headers["Expires"] = "0"
+    return response
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -47,6 +66,7 @@ def extract_ips_from_file(file_content):
 
 def process_single_ip(ip):
     """Process a single IP and return results"""
+    analyzed_at = datetime.now().strftime("%Y-%m-%d %H:%M")
     try:
         abuse_data = abuseipdb(ip)
         vt_results = virustotal(ip) or []
@@ -103,6 +123,7 @@ def process_single_ip(ip):
             'verdict': verdict,
             'total_reports': total_reports,
             'last_reported': last_reported,
+            'analyzed_at': analyzed_at,
             'error': None
         }
     except Exception as e:
@@ -114,6 +135,7 @@ def process_single_ip(ip):
             'verdict': 'Error',
             'total_reports': 'N/A',
             'last_reported': 'N/A',
+            'analyzed_at': analyzed_at,
             'error': str(e)
         }
 
@@ -125,76 +147,80 @@ def home():
 
     if request.method == "POST":
 
-        # Check if it's a file upload or single IP
-        if 'file' in request.files and request.files['file'].filename != '':
-            file = request.files['file']
-            
-            if file and allowed_file(file.filename):
-                try:
-                    file_content = file.read().decode('utf-8')
-                    ips = extract_ips_from_file(file_content)
-                    
-                    if not ips:
-                        flash("No valid IPs found in the file.", "danger")
-                        return redirect("/")
-                    
-                    batch_ips = ips
-                    batch_results = {}
-                    current_batch_index = 0
-                    
-                    flash(f"Successfully loaded {len(ips)} IP(s) from file.", "success")
-                    
-                    # Process first IP
-                    return redirect(f"/batch/0")
-                
-                except Exception as e:
-                    flash(f"Error reading file: {str(e)}", "danger")
-                    return redirect("/")
-            else:
-                flash("Please upload a .txt or .csv file.", "danger")
-                return redirect("/")
-        
-        else:
-            # Single IP processing
-            ip = request.form.get("ip", "").strip()
+        # Single IP processing
+        ip = request.form.get("ip", "").strip()
 
-            if not ip:
-                flash("Please enter an IP address.", "danger")
-                return redirect("/")
+        if not ip:
+            flash("Please enter an IP address.", "danger")
+            return redirect("/")
 
-            try:
-                ipaddress.ip_address(ip)
-            except ValueError:
-                flash("Please enter a valid IPv4 or IPv6 address.", "danger")
-                return redirect("/")
+        try:
+            ipaddress.ip_address(ip)
+        except ValueError:
+            flash("Please enter a valid IPv4 or IPv6 address.", "danger")
+            return redirect("/")
 
-            data = process_single_ip(ip)
-            latest_results = data['results']
-            latest_ip = ip
+        data = process_single_ip(ip)
+        latest_results = data['results']
+        latest_ip = ip
 
-            # A single-IP lookup means we're no longer in "batch" context;
-            # clear any leftover batch state from a previous upload so the
-            # vendor-details page doesn't mix the two up.
-            batch_ips = []
-            batch_results = {}
-            current_batch_index = 0
+        # A single-IP lookup means we're no longer in "batch" context;
+        # clear any leftover batch state from a previous run so the
+        # vendor-details page doesn't mix the two up.
+        batch_ips = []
+        batch_results = {}
+        current_batch_index = 0
 
-            return render_template(
-                "results.html", 
-                results = data['results'], 
-                total = data['total'], 
-                safe = data['safe'], 
-                blocked = data['blocked'], 
-                ip = ip,
-                verdict = data['verdict'],
-                total_reports = data['total_reports'],
-                last_reported = data['last_reported'],
-                error = data['error'],
-                is_batch = False,
-                batch_info = None
-                )
+        return render_template(
+            "result.html", 
+            results = data['results'], 
+            total = data['total'], 
+            safe = data['safe'], 
+            blocked = data['blocked'], 
+            ip = ip,
+            verdict = data['verdict'],
+            total_reports = data['total_reports'],
+            last_reported = data['last_reported'],
+            error = data['error'],
+            is_batch = False,
+            batch_info = None
+            )
     
     return render_template("index.html")
+
+@app.route("/run-batch")
+def run_batch():
+    """Read the IP list directly from the internal IP.txt file on the
+    server (uploads/IP.txt) and start a fresh batch analysis - no file
+    upload from the user needed."""
+    global batch_ips, batch_results, current_batch_index
+
+    if not os.path.exists(IP_FILE_PATH):
+        flash(f"IP file not found at '{IP_FILE_PATH}'.", "danger")
+        return redirect("/")
+
+    try:
+        with open(IP_FILE_PATH, "r") as f:
+            file_content = f.read()
+    except Exception as e:
+        flash(f"Error reading IP file: {str(e)}", "danger")
+        return redirect("/")
+
+    ips = extract_ips_from_file(file_content)
+
+    if not ips:
+        flash("No valid IPs found in the IP file.", "danger")
+        return redirect("/")
+
+    # Fresh run - drop any previously cached results so nothing stale
+    # carries over from an earlier run.
+    batch_ips = ips
+    batch_results = {}
+    current_batch_index = 0
+
+    flash(f"Loaded {len(ips)} IP(s) from the file.", "success")
+
+    return redirect("/batch/0")
 
 @app.route("/batch/<int:index>")
 def view_batch_ip(index):
@@ -224,7 +250,7 @@ def view_batch_ip(index):
     }
     
     return render_template(
-        "results.html", 
+        "result.html", 
         results = data['results'], 
         total = data['total'], 
         safe = data['safe'], 
@@ -372,6 +398,78 @@ def download_csv(ip):
         headers={
             "Content-Disposition":
             f"attachment; filename={ip}_results.csv"
+        }
+    )
+
+@app.route("/download_blocked_report")
+def download_blocked_report():
+    """Build one combined CSV of every vendor that blocked any IP from the
+    internal IP file - regardless of which single IP page the user is
+    currently viewing, and regardless of how many of the file's IPs have
+    been viewed/cached so far (any IP not yet analyzed gets analyzed now)."""
+    global batch_ips, batch_results
+
+    # Always work off the full IP list from the file, so this works the
+    # same way whether the user got here via batch browsing or via a
+    # single-IP lookup.
+    ips = batch_ips
+    if not ips:
+        if not os.path.exists(IP_FILE_PATH):
+            flash(f"IP file not found at '{IP_FILE_PATH}'.", "danger")
+            return redirect("/")
+        with open(IP_FILE_PATH, "r") as f:
+            file_content = f.read()
+        ips = extract_ips_from_file(file_content)
+
+    if not ips:
+        flash("No valid IPs found in the IP file.", "danger")
+        return redirect("/")
+
+    # Process every IP in the file in one shot - any IP not already cached
+    # (e.g. because the user hasn't browsed to it yet) gets analyzed now,
+    # so the report always covers all IPs in the file at a single click.
+    for ip in ips:
+        if ip not in batch_results:
+            batch_results[ip] = process_single_ip(ip)
+
+    report_rows = []
+    for ip in ips:
+        data = batch_results.get(ip)
+        if not data:
+            continue
+        analyzed_at = data.get('analyzed_at', datetime.now().strftime("%Y-%m-%d %H:%M"))
+        for row in data['results']:
+            if row.get('Blocked') == 'Blocked':
+                report_rows.append({
+                    "Date of Analyzing the IP": analyzed_at,
+                    "IP": ip,
+                    "Blocked Vendor Name": row.get('Vendor', 'N/A'),
+                    "Status": row.get('Blocked', 'N/A'),
+                    "Reason": row.get('Reason', 'Nil'),
+                    "Last Reported Date": row.get('Last_Reported', 'Nil'),
+                    "Total Reports": row.get('Total_Reports', 'N/A')
+                })
+
+    if not report_rows:
+        flash("No vendors blocked any IP in the file.", "info")
+        return redirect(request.referrer or "/")
+
+    columns = [
+        "Date of Analyzing the IP", "IP", "Blocked Vendor Name",
+        "Status", "Reason", "Last Reported Date", "Total Reports"
+    ]
+    df = pd.DataFrame(report_rows, columns=columns)
+
+    csv_buffer = StringIO()
+    df.to_csv(csv_buffer, index=False)
+
+    filename = f"Blocked_Report_{datetime.now().strftime('%Y%m%d_%H%M')}.csv"
+
+    return Response(
+        csv_buffer.getvalue(),
+        mimetype="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}"
         }
     )
 

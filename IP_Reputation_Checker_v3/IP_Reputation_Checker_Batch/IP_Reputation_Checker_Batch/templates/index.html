@@ -93,27 +93,19 @@
 
                 <hr class="my-4">
 
-                <h5 class="mb-3">Or Upload Batch File</h5>
+                <h5 class="mb-3">Or Analyze IPs from File</h5>
 
-                <form method="POST" enctype="multipart/form-data" id="batchFileForm">
+                <p class="text-muted small">
+                    Reads the IP list already stored on the server
+                    (<code>uploads/IP.txt</code>) and analyzes every IP in it.
+                </p>
 
-                    <div class="mb-3">
-                        <label for="fileInput" class="form-label">Upload Text or CSV File</label>
-                        <input 
-                            type="file" 
-                            class="form-control form-control-lg" 
-                            id="fileInput" 
-                            name="file"
-                            accept=".txt,.csv"
-                        >
-                        <small class="text-muted d-block mt-2">
-                            Upload a .txt or .csv file with one IP per line<br>
-                            ✓ Plain text with IPs separated by newlines<br>
-                            ✓ CSV files (IPs in any column)
-                        </small>
-                    </div>
-                    <button class="btn btn-success btn-lg w-100" type="submit" id="uploadBtn"> Upload & Analyze </button>
-                </form>
+                <a
+                    href="/run-batch"
+                    id="runBatchBtn"
+                    class="btn btn-success btn-lg w-100">
+                    Analyze IPs from File
+                </a>
             </div>
         </div>
     </div>
@@ -169,12 +161,7 @@
             .classList.remove("d-none");
     });
 
-    document.getElementById("batchFileForm").addEventListener("submit", function() {
-        const fileInput = document.getElementById("fileInput");
-        if (fileInput.files.length === 0) {
-            alert("Please select a file to upload");
-            return false;
-        }
+    document.getElementById("runBatchBtn").addEventListener("click", function() {
         document
             .getElementById("loadingOverlay")
             .classList.remove("d-none");
