@@ -1,0 +1,7 @@
+Flask
+requests
+pandas
+ipwhois
+Werkzeug
+APScheduler
+python-dotenv

@@ -93,3 +93,20 @@ between similarly-structured pages like `/batch/0` → `/batch/1`, which is
 what caused the previous IP's results to reappear. Each `/batch/<index>`
 request already builds its response strictly from that index's own IP, so
 forcing a fresh fetch on every navigation eliminates the stale view.
+
+## 9. Fixed: "Download Blocked Report" ignored single-IP scans
+Previously, `/download_blocked_report` always pulled from the whole
+`uploads/IP.txt` file, even after scanning just one IP manually - showing
+the wrong data, and slow, since it had to call every vendor's API for
+every IP in the file that hadn't been looked up yet.
+
+Now it checks which mode you're in:
+- **Single-IP scan** (typed an IP and hit Analyze): the report covers only
+  that one IP, built directly from the results already fetched for it -
+  no extra API calls, so it's instant.
+- **Batch run** (via "Analyze IPs from File"): unchanged - still covers
+  every IP in the file, analyzing any that haven't been viewed yet.
+
+A new `latest_analyzed_at` global tracks the timestamp for whichever IP
+was most recently scanned, so the single-IP report doesn't need to
+recompute anything to fill in the "Date of Analyzing the IP" column.
