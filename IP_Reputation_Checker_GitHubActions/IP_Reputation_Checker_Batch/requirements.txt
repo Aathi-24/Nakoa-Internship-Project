@@ -1,7 +1,0 @@
-Flask
-requests
-pandas
-ipwhois
-Werkzeug
-python-dotenv
-gunicorn
