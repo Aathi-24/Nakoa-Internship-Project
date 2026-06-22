@@ -1,0 +1,37 @@
+# Render.com deployment config.
+#
+# This file lets Render auto-detect how to build and run the app when
+# you connect your repository - you won't need to manually type the
+# build/start commands in Render's dashboard if this file is present
+# at the repo root.
+#
+# Render also reads the env var names listed here and will prompt you
+# to fill in the actual values (your Gmail App Password, etc.) in its
+# dashboard - it does NOT read your local .env file (that file never
+# leaves your computer / never gets deployed, since .gitignore excludes
+# it). See AUTOMATION_SETUP_GUIDE.md for exactly what to paste in.
+
+services:
+  - type: web
+    name: ip-reputation-checker
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: MAIL_SENDER
+        sync: false
+      - key: MAIL_APP_PASSWORD
+        sync: false
+      - key: MAIL_RECIPIENT
+        sync: false
+      - key: SMTP_SERVER
+        value: smtp.gmail.com
+      - key: SMTP_PORT
+        value: "587"
+      - key: CHECK_INTERVAL_MINUTES
+        value: "60"
+      - key: MISSED_CHECK_GRACE_MINUTES
+        value: "30"
+      - key: SCHEDULED_CHECK_TOKEN
+        sync: false

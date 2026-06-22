@@ -1,0 +1,11 @@
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Scheduler state (regenerated automatically, not part of source)
+uploads/scheduler_state.json

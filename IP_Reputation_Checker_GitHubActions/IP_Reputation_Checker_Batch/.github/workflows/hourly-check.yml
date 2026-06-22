@@ -1,0 +1,44 @@
+# Triggers the IP Reputation Checker's hourly check by calling its
+# /run-scheduled-check endpoint on a schedule.
+#
+# This replaces an external cron service (e.g. cron-job.org) - GitHub
+# runs this workflow on its own infrastructure, so neither your PC nor
+# the app itself needs to "stay on" for the hourly check to happen.
+#
+# Setup required (see AUTOMATION_SETUP_GUIDE.md for full details):
+#   1. Add two repo secrets under Settings -> Secrets and variables ->
+#      Actions -> "New repository secret":
+#        - APP_URL                e.g. https://your-app.onrender.com
+#        - SCHEDULED_CHECK_TOKEN  the same value as in Render's
+#                                 SCHEDULED_CHECK_TOKEN env var
+#   2. That's it - this workflow starts running automatically once it's
+#      on the default branch.
+#
+# Note on timing: GitHub does not guarantee scheduled workflows run at
+# the exact minute requested, especially during periods of high load
+# across GitHub's infrastructure - runs can occasionally be delayed.
+# MISSED_CHECK_GRACE_MINUTES has been widened in this project's .env to
+# absorb typical delays without firing false "missed check" alerts.
+
+name: Hourly IP Reputation Check
+
+"on":
+  schedule:
+    - cron: "0 * * * *"   # every hour, on the hour (UTC)
+  workflow_dispatch: {}     # lets you trigger a run manually from the Actions tab, useful for testing
+
+jobs:
+  trigger-check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call /run-scheduled-check
+        run: |
+          response=$(curl -s -o response.json -w "%{http_code}" \
+            "${{ secrets.APP_URL }}/run-scheduled-check?token=${{ secrets.SCHEDULED_CHECK_TOKEN }}")
+          echo "HTTP status: $response"
+          echo "Response body:"
+          cat response.json
+          if [ "$response" -ne 200 ]; then
+            echo "::error::Scheduled check endpoint returned HTTP $response"
+            exit 1
+          fi

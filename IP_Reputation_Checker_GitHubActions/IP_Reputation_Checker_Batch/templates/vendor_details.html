@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ vendor_name }} - Vendor Report</title>
+
+        <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+    </head>
+
+    <body bgcolor = "black">
+        <nav class="navbar navbar-dark bg-dark shadow-sm">
+            <div class="container">
+                <span class="navbar-brand mb-0 h1"> IP Reputation Dashboard </span>
+                <a href="/" class="btn btn-outline-light"> Back to Dashboard </a>
+            </div>
+        </nav>
+
+        <script src="https://code.jquery.com/jquery-3.7.1.min.js"> </script>
+
+        <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"> </script>
+
+        <script>
+            $(document).ready(
+                function () {
+                    $('#vendorDetailsTable').DataTable();
+                }
+            );
+        </script>
+
+        <div class="container mt-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="display-6 fw-bold mb-0">{{ vendor_name }}</h1>
+                <a href="javascript:history.back()" class="btn btn-outline-secondary"> &larr; Back to Results </a>
+            </div>
+
+            <div class="alert alert-info">
+                {% if is_batch %}
+                    Showing {{ vendor_name }}'s result for every IP that has been checked so far in this batch.
+                {% else %}
+                    Showing {{ vendor_name }}'s result for the analyzed IP.
+                {% endif %}
+            </div>
+
+            <div class = "table-responsive">
+                <table id="vendorDetailsTable" class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>IP Address </th>
+                            <th>Status </th>
+                            <th>Reason </th>
+                            <th>Last Reported </th>
+                            <th>Total Reports </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% for row in rows %}
+                        <tr>
+                            <td>{{ row.ip }}</td>
+                            <td>
+                                {% if row.status == "Blocked" %}
+                                    <span class="badge rounded-pill bg-danger px-3 py-2"> Blocked </span>
+                                {% else %}
+                                    <span class="badge rounded-pill bg-success px-3 py-2"> Safe </span>
+                                {% endif %}
+                            </td>
+                            <td>{{ row.reason }}</td>
+                            <td>{{ row.last_reported }}</td>
+                            <td>{{ row.total_reports }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </body>
+
+</html>

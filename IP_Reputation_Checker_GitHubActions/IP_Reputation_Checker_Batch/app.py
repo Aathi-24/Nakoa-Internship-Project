@@ -2,7 +2,7 @@ from io import StringIO, BytesIO
 from flask import Flask, render_template, request, send_file, Response, flash, redirect, session, jsonify
 from services.main_file import abuseipdb, virustotal
 from services.extra_vendors import greynoise, ipqualityscore, shodan_internetdb
-from services.scheduler import start_scheduler, get_scheduler_status
+from services.scheduled_check import run_scheduled_check, get_scheduler_status, is_token_valid
 from ipwhois import IPWhois
 import pandas as pd
 import ipaddress
@@ -20,11 +20,12 @@ batch_ips = []
 batch_results = {}
 current_batch_index = 0
 
-UPLOAD_FOLDER = 'uploads'
+APP_DIR = os.path.dirname(os.path.abspath(__file__))
+
+UPLOAD_FOLDER = os.path.join(APP_DIR, 'uploads')
 ALLOWED_EXTENSIONS = {'txt', 'csv'}
 
-APP_DIR = os.path.dirname(os.path.abspath(__file__))
-IP_FILE_PATH = os.path.join(APP_DIR, '..', 'uploads', 'IP.txt')
+IP_FILE_PATH = os.path.join(UPLOAD_FOLDER, 'IP.txt')
 
 if not os.path.exists(UPLOAD_FOLDER):
     os.makedirs(UPLOAD_FOLDER)
@@ -554,8 +555,30 @@ def details(ip):
     )
 
 
-if __name__ == "__main__":
-    if not app.debug or os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-        start_scheduler(IP_FILE_PATH, extract_ips_from_file, build_blocked_report_rows_for_ips)
+@app.route("/run-scheduled-check", methods=["GET", "POST"])
+def run_scheduled_check_route():
+    """Triggered by an external free cron service (e.g. cron-job.org)
+    once an hour - NOT meant to be clicked by a person in a browser.
 
+    Runs the same check that used to be driven by an in-process
+    background scheduler, but on-demand via HTTP instead. This lets the
+    app live on a free host that sleeps when idle (Render, etc.): the
+    cron service's hourly HTTP request is what wakes the app up and
+    triggers the check, so nothing needs to "stay running" for this to
+    keep happening.
+
+    Protected by a secret token (?token=... or X-Scheduled-Check-Token
+    header) read from SCHEDULED_CHECK_TOKEN in .env, so this can't be
+    triggered by anyone who happens to find the URL.
+    """
+    provided_token = request.args.get("token") or request.headers.get("X-Scheduled-Check-Token", "")
+
+    if not is_token_valid(provided_token):
+        return jsonify({"error": "Invalid or missing token."}), 403
+
+    result = run_scheduled_check(IP_FILE_PATH, extract_ips_from_file, build_blocked_report_rows_for_ips)
+    return jsonify(result), 200
+
+
+if __name__ == "__main__":
     app.run(debug=True)
